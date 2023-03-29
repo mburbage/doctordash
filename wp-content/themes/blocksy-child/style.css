@@ -70,6 +70,12 @@ p {
     border: solid white 6px !important;
     border-radius: 35px !important;
 }
+.wp-element-button:hover,
+.wp-block-button__link:hover {
+    font-size: 19px !important;
+    text-transform: uppercase !important;
+    border: solid #f9a80c 6px !important;
+}
 
 .wp-block-group {
     margin-bottom: 5em;
@@ -91,7 +97,7 @@ p {
 
 .page-hero img {
     object-fit: cover;
-    width: calc(100vw - 20%);
+    width: calc(100vw - 50%);
     max-width: initial;
     height: 600px;
 }
