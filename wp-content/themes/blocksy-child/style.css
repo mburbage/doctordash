@@ -32,7 +32,9 @@ h4,
     font-weight: 700 !important;
     font-style: normal !important;
 }
-
+.entry-content *+:is(h1,h2,h3,h4,h5,h6) {
+    margin-top: 1em;
+    }
 .display {
     font-size: 3em;
     line-height: 1.3em;
