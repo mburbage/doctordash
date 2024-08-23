@@ -23,7 +23,7 @@ wp-config.php
 
 # Example themes
 /wp-content/themes/twenty*/
-/wp-content/themes/blocksy/*
+/wp-content/themes/blocksy/
 
 # Example plugin
 /wp-content/plugins/hello.php
