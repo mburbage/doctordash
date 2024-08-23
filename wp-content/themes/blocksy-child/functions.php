@@ -11,15 +11,15 @@ add_action('wp_enqueue_scripts', function () {
 	wp_enqueue_script('child-javascript_js', get_stylesheet_directory_uri() . '/doctordash.js');
 
 	//wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
-	wp_enqueue_style('child-style-min', get_stylesheet_directory_uri() . '/style.min.css');
 	
-
+	
 	/* <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css" />  
 	<script src="https://cdn.datatables.net/2.1.4/js/dataTables.js"></script> */
 	//wp_enqueue_style('datatables_css', 'https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css');
 	wp_enqueue_style('ajaxfoundation_css', 'https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css');
 	wp_enqueue_style('foundation_css', 'https://cdn.datatables.net/2.1.4/css/dataTables.foundation.css');
-
+	
+	wp_enqueue_style('child-style-min', get_stylesheet_directory_uri() . '/style.min.css');
 	
 	
 
@@ -66,7 +66,7 @@ function set_post_title($post_id) {
 	// Create DateTime object from value (formats must match).
 	$time = DateTime::createFromFormat('H:i:s', $time_string);
 
-	$title = $date->format('F j Y') . ' ' . $time->format('H:i') . ' - Medical Transportation From ' . $_POST["acf"]["field_66a911abbb422"] . ' To ' .  $_POST["acf"]["field_66c74a91e4bd0"];
+	$title = 'Medical Transportation From ' . $_POST["acf"]["field_66a911abbb422"] . ' To ' .  $_POST["acf"]["field_66c74a91e4bd0"] . ' - ' . $date->format('F j Y') . ' ' . $time->format('H:i');
 
 	$where = array('ID' => $post_id);
 
@@ -120,30 +120,6 @@ function list_empty_seats_func($atts) {
 
 	// @var WP_Posts[]
 	$posts = $query->get_posts();
-
-	/* <table id="example" class="display" width="100%">
-		<thead>
-			<tr>
-			<th>Name</th>
-			<th>Position</th>
-			<th>Office</th>
-			<th>Age</th>
-			<th>Start date</th>
-			<th>Salary</th>
-			</tr>
-		</thead>
-	
-		<tbody>
-			<tr>
-			<td>Garrett Winters</td>
-			<td>Director</td>
-			<td>Edinburgh</td>
-			<td>63</td>
-			<td>2011/07/25</td>
-			<td>$5,300</td>
-			</tr>
-		</tbody>
-	</table> */
 
 	$html = '';
 	$html .= '<table id="example" class="display" width="100%">';

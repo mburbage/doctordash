@@ -35,13 +35,22 @@ h2 .display,
 .mailpoet_submit,
 .mailpoet_form_html input[type=submit],
 button {
-    font-family: var(--headline-font);
+    font-family: var(--headline-font) !important;
     font-weight: 700;
     font-style: normal;
 }
-.table, th, td {
+
+.table,
+th,
+td {
     font-size: 16px;
-    }
+}
+
+.menu .button,
+.menu a {
+    display: flex !important;
+}
+
 .entry-content *+:is(h1, h2, h3, h4, h5, h6) {
     margin-top: calc(var(--has-content-spacing, 1)*(.3em + 10px));
     line-height: 1.3em;
@@ -208,9 +217,14 @@ button {
 }
 
 .wp-block-group {
-    margin-bottom: 5em;
+    margin-bottom: 5em !important;
 }
-
+.wp-block-group:nth-last-child(-n + 1) {
+    margin-bottom: 0 !important;
+}
+[data-vertical-spacing*=bottom] {
+    padding-bottom: 0;
+    }
 .page-hero,
 .page-hero .wp-block-columns {
     width: 100vw !important;
@@ -244,7 +258,9 @@ button {
     padding: 1em 2em;
     max-width: 40%;
 }
-
+blockquote{
+    border-left: none;
+}
 blockquote::before {
     content: " ";
     width: 55px;
@@ -270,6 +286,7 @@ blockquote::after {
 .wp-block-quote h3 {
     margin-bottom: 0;
     padding: 1em 0 0.7em;
+    color: var(--heading-color);
 }
 
 .wpforms-container input.wpforms-field-medium,
@@ -302,7 +319,7 @@ blockquote::after {
     margin: 0 auto;
 }
 
-.list-padding-1 li{
+.list-padding-1 li {
     margin: 0 1.6rem;
 }
 
@@ -354,14 +371,14 @@ blockquote::after {
 .wheelchair-icon {
     position: absolute;
     z-index: 2;
-    top: 0;
+    top: 20px;
     right: 20px;
 }
 
 .night-icon {
     position: absolute;
     z-index: 2;
-    top: 0;
+    top: 20px;
     right: 20px;
 }
 
@@ -373,7 +390,7 @@ blockquote::after {
 }
 
 .wheelchair-icon.icon-2 {
-    top: 40px;
+    top: 60px;
 }
 
 #cmplz-document,
