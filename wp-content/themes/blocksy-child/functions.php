@@ -6,23 +6,20 @@ add_action('wp_enqueue_scripts', function () {
 
 	wp_enqueue_script('datatablesjquery_js', 'https://code.jquery.com/jquery-3.7.1.js');
 	wp_enqueue_script('ajaxfoundation_js', 'https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js');
-	wp_enqueue_script('datatables_js', 'https://cdn.datatables.net/2.1.4/js/dataTables.js');
-	wp_enqueue_script('foundation_js', 'https://cdn.datatables.net/2.1.4/js/dataTables.foundation.js');
+	wp_enqueue_script('datatables_combined_js', 'https://cdn.datatables.net/v/zf/dt-2.1.4/r-3.0.2/datatables.min.js');
+	wp_enqueue_script('foundation_js', 'https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js');
 	wp_enqueue_script('child-javascript_js', get_stylesheet_directory_uri() . '/doctordash.js');
 
 	//wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
-	
-	
+
+
 	/* <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css" />  
 	<script src="https://cdn.datatables.net/2.1.4/js/dataTables.js"></script> */
 	//wp_enqueue_style('datatables_css', 'https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css');
 	wp_enqueue_style('ajaxfoundation_css', 'https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css');
-	wp_enqueue_style('foundation_css', 'https://cdn.datatables.net/2.1.4/css/dataTables.foundation.css');
-	
-	wp_enqueue_style('child-style-min', get_stylesheet_directory_uri() . '/style.min.css');
-	
-	
+	wp_enqueue_style('datatables_combined_css', 'https://cdn.datatables.net/v/zf/dt-2.1.4/r-3.0.2/datatables.min.css');
 
+	wp_enqueue_style('child-style-min', get_stylesheet_directory_uri() . '/style.min.css');
 }, 100);
 
 /**
@@ -33,6 +30,7 @@ add_action('wp_enqueue_scripts', function () {
  * @param int $post_id The post being saved.
  */
 function set_post_title($post_id) {
+
 	if ($post_id == null || empty($_POST))
 		return;
 
@@ -66,7 +64,7 @@ function set_post_title($post_id) {
 	// Create DateTime object from value (formats must match).
 	$time = DateTime::createFromFormat('H:i:s', $time_string);
 
-	$title = 'Medical Transportation From ' . $_POST["acf"]["field_66a911abbb422"] . ' To ' .  $_POST["acf"]["field_66c74a91e4bd0"] . ' - ' . $date->format('F j Y') . ' ' . $time->format('H:i');
+	$title = 'Medical Transportation From ' . $_POST["acf"]["field_66a911abbb422"] . ' To ' .  $_POST["acf"]["field_66c74a91e4bd0"] . ' - ' . $date->format('F j, Y') . ' ' . $time->format('H:i A');
 
 	$where = array('ID' => $post_id);
 
@@ -74,7 +72,59 @@ function set_post_title($post_id) {
 	//}
 }
 
+function set_empty_seat_meta($post_id) {
+
+	if ($post_id == null || empty($_POST))
+		return;
+
+	if (!isset($_POST['post_type']) || $_POST['post_type'] != 'empty-seat')
+		return;
+
+	if (wp_is_post_revision($post_id))
+		$post_id = wp_is_post_revision($post_id);
+
+	$fields = get_fields();
+
+	$html = return_empty_seats_info($fields);
+
+	global $post;
+	if (empty($post))
+		$post = get_post($post_id);
+
+	$date_string = $_POST["acf"]["field_66a7d48e7f09c"];
+
+	// Create DateTime object from value (formats must match).
+	$date = DateTime::createFromFormat('Ymd', $date_string);
+
+	// Load field value.
+	$time_string = $_POST["acf"]["field_66a911c0bb423"];
+
+	// Create DateTime object from value (formats must match).
+	$time = DateTime::createFromFormat('H:i:s', $time_string);
+
+	$title = 'Medical transportation from ' . $_POST["acf"]["field_66a911abbb422"] . ' to ' .  $_POST["acf"]["field_66c74a91e4bd0"] . ' on ' . $date->format('F j, Y') . ' at ' . $time->format('H:i') . '. For more details click here. Contact Doctor Dash at (919) 390-3320 to reserve your ride today. Terms and conditions apply';
+
+	$where = array('ID' => $post_id);
+
+	global $wpdb;
+
+	$wpdb->update($wpdb->posts, array('post_content' => $html, 'post_excerpt' => $title), $where);
+
+	if ($fields["map"] == '')
+		return;
+
+	$image_id = $fields["map"]["ID"];
+
+	set_empty_seat_featured_image($post_id, $image_id);
+}
+
+function set_empty_seat_featured_image($post_id, $image_id) {
+
+	set_post_thumbnail($post_id, $image_id);
+}
+
 add_action('save_post', 'set_post_title');
+add_action('save_post', 'set_empty_seat_meta');
 
 function return_empty_seats_info($a) {
 
@@ -83,7 +133,10 @@ function return_empty_seats_info($a) {
 	if ($a):
 		$html .= "<ul>";
 		foreach ($a as $name => $value):
-			$html .= "<li><b>$name</b> $value</li>";
+			if ($name != 'map') {
+				$html .= "<li><b>$name</b> $value</li>";
+			}
+
 		endforeach;
 		$html .= "</ul>";
 	endif;
@@ -125,6 +178,7 @@ function list_empty_seats_func($atts) {
 	$html .= '<table id="example" class="display" width="100%">';
 	$html .= '	<thead>';
 	$html .= '		<tr>';
+	$html .= '		<th>Trip</th>';
 	$html .= '		<th>Date</th>';
 	$html .= '		<th>Pickup Time</th>';
 	$html .= '		<th>Pickup City</th>';
@@ -134,6 +188,7 @@ function list_empty_seats_func($atts) {
 	$html .= '		<th>Seats</th>';
 	$html .= '		<th>Mode</th>';
 	$html .= '		<th>Price</th>';
+	$html .= '		<th>Details</th>';
 	$html .= '		</tr>';
 	$html .= '	</thead>';
 	$html .= '	<tbody>';
@@ -145,9 +200,12 @@ function list_empty_seats_func($atts) {
 		$since = get_field('since', $postId);
 		$fields = get_fields($postId);
 		$date = DateTime::createFromFormat('F j, Y', $fields["pickup_date"]);
-		
+
 
 		$html .= '<tr>';
+		$html .= '<td class="date">';
+		$html .= $postId;
+		$html .= '</td>';
 		$html .= '<td class="date">';
 		$html .= $date->format('n/j');
 		$html .= '</td>';
@@ -174,6 +232,9 @@ function list_empty_seats_func($atts) {
 		$html .= '</td>';
 		$html .= '<td class="city">';
 		$html .= $fields["price"];
+		$html .= '</td>';
+		$html .= '<td class="city">';
+		$html .= '<a href="' . get_post_permalink($postId) . '" >More Info</a>';
 		$html .= '</td>';
 		$html .= '</tr>';
 	}

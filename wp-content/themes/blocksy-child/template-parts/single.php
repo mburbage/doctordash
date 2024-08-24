@@ -75,7 +75,13 @@ if ($page_structure === 'none' || blocksy_post_uses_vc()) {
 	
 	$fields = get_fields();
 
-	$html = return_empty_seats_info($fields);	
+	$html = '';
+
+	$html .= return_empty_seats_info($fields);	
+
+	$html .= '<div class="wp-block-buttons contact-buttons is-content-justification-center is-layout-flex wp-container-core-buttons-is-layout-1 wp-block-buttons-is-layout-flex">
+<div class="wp-block-button dark phone"><a class="wp-block-button__link wp-element-button" href="/discount-trips" target="_blank" rel="noreferrer noopener">View More Discount Trips</a></div>
+</div>';
 	
 	echo blocksy_single_content($html);
 
