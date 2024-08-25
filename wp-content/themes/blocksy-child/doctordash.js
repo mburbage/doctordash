@@ -1,5 +1,8 @@
 $(document).ready( function () {
     $('#example').DataTable( {
-        responsive: true
+        responsive: true,
+        order: [
+            [1, 'asc']
+        ]
     } );
 } );
