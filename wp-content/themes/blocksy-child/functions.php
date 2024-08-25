@@ -50,7 +50,7 @@ function set_post_title($post_id) {
 		return; // already set
 
 	//if ($_POST['empty-seat'] != '') {
-	global $wpdb;
+	global $wpdb; 
 	//$date = date('l, d.m.Y', strtotime($_POST['empty-seat']));
 	// Load field value.
 	$date_string = $_POST["acf"]["field_66a7d48e7f09c"];
@@ -64,7 +64,7 @@ function set_post_title($post_id) {
 	// Create DateTime object from value (formats must match).
 	$time = DateTime::createFromFormat('H:i:s', $time_string);
 
-	$title = 'Medical Transportation From ' . $_POST["acf"]["field_66a911abbb422"] . ' To ' .  $_POST["acf"]["field_66c74a91e4bd0"] . ' - ' . $date->format('F j, Y') . ' ' . $time->format('H:i A');
+	$title = 'Discount Free Medical Transportation From ' . $_POST["acf"]["field_66a911abbb422"] . ' To ' .  $_POST["acf"]["field_66c74a91e4bd0"] . ' - ' . $_POST["acf"]["field_66a91f896b626"] . ' - ' . $date->format('F j, Y') . ' ' . $time->format('H:i A');
 
 	$where = array('ID' => $post_id);
 
@@ -102,7 +102,7 @@ function set_empty_seat_meta($post_id) {
 	// Create DateTime object from value (formats must match).
 	$time = DateTime::createFromFormat('H:i:s', $time_string);
 
-	$title = 'Medical transportation from ' . $_POST["acf"]["field_66a911abbb422"] . ' to ' .  $_POST["acf"]["field_66c74a91e4bd0"] . ' on ' . $date->format('F j, Y') . ' at ' . $time->format('H:i') . '. For more details click here. Contact Doctor Dash at (919) 390-3320 to reserve your ride today. Terms and conditions apply';
+	$title = 'Discount/Free Medical transportation from ' . $_POST["acf"]["field_66a911abbb422"] . ' to ' .  $_POST["acf"]["field_66c74a91e4bd0"] . ' on ' . $date->format('F j, Y') . ' at ' . $time->format('H:i') . '. For more details click here. Contact Doctor Dash at (919) 390-3320 to reserve your ride today. Terms and conditions apply';
 
 	$where = array('ID' => $post_id);
 
@@ -113,13 +113,58 @@ function set_empty_seat_meta($post_id) {
 	if ($fields["map"] == '')
 		return;
 
-	$image_id = $fields["map"]["ID"];
+	//$image_id = $fields["map"]["ID"];
 
-	set_empty_seat_featured_image($post_id, $image_id);
+	//set_empty_seat_featured_image($post_id, $image_id);
+
+	$google_static_map_id = '5085acd06b8a584';
+	$google_static_map_api = 'AIzaSyDHbxSoQE9_WUDbQhA-5VE_px7HMQcGoGA';
+	$google_static_map_secret = 'AuaAjp6r5qI3Mp55I4Hp3Oid6nc=';
+	$google_static_map_zoom = '10';
+	$google_static_map_size = '640x640';
+	$google_static_map_scale = '2';
+	$google_static_map_center = $_POST["acf"]["field_66a911abbb422"] . ',NC';
+	$google_static_map_marker_style = 'size:small%7C';
+	$google_static_map_marker_icon1 = 'icon:' . get_stylesheet_directory_uri() . '/images/map_pu.png';
+	$google_static_map_marker_icon2 = 'icon:' . get_stylesheet_directory_uri() . '/images/map_do.png';
+	$google_static_map_marker_loc1 = 'markers=anchor:center%7C' . $google_static_map_marker_icon1 . '%7C' . $_POST["acf"]["field_66a91255bb425"] . '%7C';
+	$google_static_map_marker_loc2 = '&markers=anchor:center%7C' . $google_static_map_marker_icon1 . '%7C' . $_POST["acf"]["field_66c74ad20e5eb"];
+	$google_static_map_filename = $_POST["acf"]["field_66a911abbb422"].''.$_POST["acf"]["field_66a91255bb425"] . '-' . $_POST["acf"]["field_66c74a91e4bd0"].''.$_POST["acf"]["field_66c74ad20e5eb"];
+
+	
+	$google_static_map_style = 'feature:administrative%2Elocality%7C';
+	$google_static_map_style .= 'element:all%7C';
+	$google_static_map_style .= 'hue:0x2c2e33%7Csaturation:7%7Clightness:19%7Cvisibility:on';
+	$google_static_map_style .= '&style=feature:landscape%7C';
+	$google_static_map_style .= 'element:all%7C';
+	$google_static_map_style .= 'hue:0xffffff%7Csaturation:%2D100%7Clightness:100%7Cvisibility:simplified';
+	$google_static_map_style .= '&style=feature:poi%7C';
+	$google_static_map_style .= 'element:geometry%7C';
+	$google_static_map_style .= 'hue:0xbbc0c4%7Csaturation:%2D93%7Clightness:31%7Cvisibility:simplified:';
+	$google_static_map_style .= '&style=feature:road%7C';
+	$google_static_map_style .= 'element:labels%7C';
+	$google_static_map_style .= 'hue:0xbbc0c4%7Csaturation:%2D93%7Clightness:31%7Cvisibility:on';
+	$google_static_map_style .= '&style=feature:road%2Earterial%7C';
+	$google_static_map_style .= 'element:labels%7C';
+	$google_static_map_style .= 'hue:0xbbc0c4%7Csaturation:%2D93%7Clightness:31%7Cvisibility:simplified';
+	$google_static_map_style .= '&style=feature:road%2Elocal%7C';
+	$google_static_map_style .= 'element:geometry%7C';
+	$google_static_map_style .= 'hue:0xe9ebed%7Csaturation:%2D90%7Clightness:8%7Cvisibility:simplified';
+	$google_static_map_style .= '&style=feature:transit%7C';
+	$google_static_map_style .= 'element:all%7C';
+	$google_static_map_style .= 'hue:0xe9ebed%7Csaturation:10%7Clightness:69%7Cvisibility:on';
+	$google_static_map_style .= '&style=feature:water%7C';
+	$google_static_map_style .= 'element:all%7C';
+	$google_static_map_style .= 'hue:0xe9ebed%7Csaturation:%2D78%7Clightness:67%7Cvisibility:simplified';
+
+
+	$map_id = google_map_static_upload_file_by_url( 'https://maps.googleapis.com/maps/api/staticmap?'.$google_static_map_marker_loc1.''.$google_static_map_marker_loc2.'&scale='.$google_static_map_scale.'&size='. $google_static_map_size .'&style=' . $google_static_map_style . '&key=' . $google_static_map_api .'' , $google_static_map_filename );
+
+	set_empty_seat_featured_image($post_id, $map_id);
+
 }
 
 function set_empty_seat_featured_image($post_id, $image_id) {
-
 	set_post_thumbnail($post_id, $image_id);
 }
 
@@ -152,7 +197,6 @@ function list_empty_seats_func($atts) {
 		'post_type' => 'empty-seat',
 		'post_status' => 'publish',
 		// todo maximum amount of posts, use -1 to set unlimited
-		'posts_per_page' => 5,
 		// todo type of order
 		'order' => 'DESC',
 		// todo order field
@@ -243,4 +287,83 @@ function list_empty_seats_func($atts) {
 	$html .= '	</table>';
 
 	return $html;
+}
+
+/**
+ * Upload image from URL programmatically
+ *
+ */
+
+
+function google_map_static_upload_file_by_url( $url, $map_filename = null, $title = null, $content = null, $alt = null ) {
+
+	require_once( ABSPATH . "/wp-load.php");
+	require_once( ABSPATH . "/wp-admin/includes/image.php");
+	require_once( ABSPATH . "/wp-admin/includes/file.php");
+	require_once( ABSPATH . "/wp-admin/includes/media.php");
+	
+	// Download url to a temp file
+	$tmp = download_url( $url );
+	if ( is_wp_error( $tmp ) ) return false;
+	
+	// Get the filename and extension ("photo.png" => "photo", "png")
+	$filename = pathinfo($url, PATHINFO_FILENAME);
+	$extension = pathinfo($url, PATHINFO_EXTENSION);
+	
+	// An extension is required or else WordPress will reject the upload
+	if ( ! $extension ) {
+		// Look up mime type, example: "/photo.png" -> "image/png"
+		$mime = mime_content_type( $tmp );
+		$mime = is_string($mime) ? sanitize_mime_type( $mime ) : false;
+		
+		// Only allow certain mime types because mime types do not always end in a valid extension (see the .doc example below)
+		$mime_extensions = array(
+			// mime_type         => extension (no period)
+			'text/plain'         => 'txt',
+			'text/csv'           => 'csv',
+			'application/msword' => 'doc',
+			'image/jpg'          => 'jpg',
+			'image/jpeg'         => 'jpeg',
+			'image/gif'          => 'gif',
+			'image/png'          => 'png',
+			'video/mp4'          => 'mp4',
+		);
+		
+		if ( isset( $mime_extensions[$mime] ) ) {
+			// Use the mapped extension
+			$extension = $mime_extensions[$mime];
+		}else{
+			// Could not identify extension. Clear temp file and abort.
+			wp_delete_file($tmp);
+			return false;
+		}
+	}
+	
+	// Upload by "sideloading": "the same way as an uploaded file is handled by media_handle_upload"
+	$args = array(
+		'name' => "$map_filename.$extension",
+		'tmp_name' => $tmp,
+	);
+	
+	// Post data to override the post title, content, and alt text
+	$post_data = array();
+	if ( $title )   $post_data['post_title'] = $title;
+	if ( $content ) $post_data['post_content'] = $content;
+	
+	// Do the upload
+	$attachment_id = media_handle_sideload( $args, 0, null, $post_data );
+	
+	// Clear temp file
+	wp_delete_file($tmp);
+	
+	// Error uploading
+	if ( is_wp_error($attachment_id) ) return false;
+	
+	// Save alt text as post meta if provided
+	if ( $alt ) {
+		update_post_meta( $attachment_id, '_wp_attachment_image_alt', $alt );
+	}
+	
+	// Success, return attachment ID
+	return (int) $attachment_id;
 }
