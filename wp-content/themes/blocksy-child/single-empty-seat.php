@@ -10,7 +10,7 @@ if (
 	||
 	! elementor_theme_do_location('single')
 ) {
-	get_template_part('template-parts/single');
+	get_template_part('template-parts/single-empty-seat');
 	
 }
 
