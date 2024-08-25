@@ -19,7 +19,6 @@
 
 .ct-container-hero {
     padding-top: 0;
-    padding-bottom: 0;
 }
 
 h1,
@@ -64,6 +63,11 @@ td {
     position: relative;
 }
 
+.empty-seat-template .entry-header .page-title,
+.empty-seat-template-default .entry-header .page-title {
+    text-transform: capitalize;
+}
+
 .post .entry-header .page-title {
     text-align: left;
     text-transform: inherit;
@@ -99,13 +103,15 @@ h1 {
 }
 
 h2 {
-    font-size: 2em;
+    font-size: 2em !important;
 }
 
 h3 {
     font-size: 2em;
 }
-
+h5 {
+    font-size: 1.25em !important;
+}
 p,
 ul {
     font-family: var(--body-font);
@@ -132,6 +138,27 @@ li {
     font-size: 2em;
     color: var(--heading-color, var(--heading-2-color, var(--headings-color)));
     text-decoration: none;
+}
+
+#sidebar .wp-block-latest-posts__post-title,
+#sidebar .wp-block-categories-list li {
+    font-size: 1.3em;
+
+}
+
+#sidebar .wp-block-latest-posts.wp-block-latest-posts__list,
+#sidebar .wp-block-categories-list {
+    padding-left: 0;
+    margin-left: 0;
+}
+
+#sidebar .wp-block-latest-posts.wp-block-latest-posts__list li,
+#sidebar .wp-block-categories-list li {
+    clear: both;
+    background-color: inherit;
+    padding: 0 0 15px;
+    list-style-image: none;
+
 }
 
 .recent-posts img {
@@ -187,17 +214,20 @@ button {
 
 .wp-element-button,
 .wp-block-button__link,
-.wpforms-submit-container button {
-    line-height: 1em;
-    font-size: 1.7em;
-    text-transform: uppercase;
-    border-radius: 40px;
-    background: initial;
-    padding: 15px 25px 15px 25px;
-    -webkit-border-radius: 40px;
-    -moz-border-radius: 40px;
-    -ms-border-radius: 40px;
-    -o-border-radius: 40px;
+.wpforms-submit-container button,
+.mailpoet_submit {
+    font-family: var(--headline-font) !important;
+    line-height: 1em !important;
+    font-weight: 700 !important;
+    font-size: 1.7em !important;
+    text-transform: uppercase !important;
+    border-radius: 40px !important;
+    background: initial !important;
+    padding: 20px 25px 20px 25px !important;
+    -webkit-border-radius: 40px !important;
+    -moz-border-radius: 40px !important;
+    -ms-border-radius: 40px !important;
+    -o-border-radius: 40px !important;
 }
 
 .wp-block-button.light.phone a {
@@ -205,11 +235,14 @@ button {
     letter-spacing: .05em;
 }
 
-.wpforms-submit-container button {
-    height: auto !important;
-    padding: 5px 20px !important;
-    line-height: var(--lineHeight) !important;
-    min-height: var(--buttonMinHeight) !important;
+.mailpoet_paragraph.dark.last {
+    display: inline-block;
+}
+
+#mailpoet_form_2 .mailpoet_text,
+#mailpoet_form_2 .mailpoet_textarea {
+
+    max-width: 600px;
 }
 
 .forms div {
@@ -218,21 +251,27 @@ button {
 
 .wp-element-button:hover,
 .wp-block-button__link:hover,
-.wpforms-submit-container button:hover {
+.wpforms-submit-container button:hover,
+.mailpoet_submit:hover {
 
     opacity: .75;
 }
 
 .wp-block-group {
-    margin-bottom: 5em !important;
+    margin-bottom: 5em;
+}
+
+.call-to-action.footer {
+    margin-bottom: 0;
 }
 
 .wp-block-group:nth-last-child(-n + 1) {
-    margin-bottom: 0 !important;
+    /* margin-bottom: 0 !important; */
+    margin-block-end: var(--theme-content-spacing);
 }
 
 [data-vertical-spacing*=bottom] {
-    padding-bottom: 0;
+    /* padding-bottom: 0; */
 }
 
 .page-hero,
@@ -316,7 +355,6 @@ blockquote::after {
 }
 
 .list-3-col {
-    display: grid;
     max-width: 1040px !important;
     grid-auto-flow: column;
     grid-template: repeat(3, 1fr) / repeat(2, 1fr);
@@ -324,7 +362,6 @@ blockquote::after {
 }
 
 .list-2-col {
-    display: grid;
     max-width: 1040px !important;
     grid-auto-flow: column;
     grid-template: repeat(7, 0fr) / repeat(2, 1fr);
@@ -398,7 +435,7 @@ blockquote::after {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 10px;
+    bottom: 0;
 }
 
 .wheelchair-icon.icon-2 {
@@ -439,12 +476,25 @@ table.dataTable>tbody>tr.child span.dtr-title {
     min-width: 100px;
 }
 
-[data-footer*="type-1"] .ct-footer [data-row*="middle"]>div {
+[data-footer*="type-1"] .ct-footer [data-row*="top"]>div {
     padding-block: 0;
 }
 
-[data-footer*="type-1"] .ct-footer [data-row*="middle"] {
+[data-footer*="type-1"] .ct-footer [data-row*="top"] {
     background-color: var(--wp--preset--color--palette-color-1) !important;
+}
+
+.wpforms-submit-container button {
+    line-height: 1em;
+    font-size: 1.7em;
+    text-transform: uppercase;
+    border-radius: 40px;
+    background: initial;
+    padding: 15px 25px 15px 25px;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    -ms-border-radius: 40px;
+    -o-border-radius: 40px;
 }
 
 @media only screen and (max-width: 768px) {
