@@ -29,13 +29,20 @@ add_action('wp_enqueue_scripts', function () {
  *
  * @param int $post_id The post being saved.
  */
+
+
+
 function set_post_title($post_id) {
+
+	
 
 	if ($post_id == null || empty($_POST))
 		return;
 
 	if (!isset($_POST['post_type']) || $_POST['post_type'] != 'empty-seat')
 		return;
+
+		
 
 	if (wp_is_post_revision($post_id))
 		$post_id = wp_is_post_revision($post_id);
@@ -102,20 +109,13 @@ function set_empty_seat_meta($post_id) {
 	// Create DateTime object from value (formats must match).
 	$time = DateTime::createFromFormat('H:i:s', $time_string);
 
-	$title = 'Discount/Free Medical transportation from ' . $_POST["acf"]["field_66a911abbb422"] . ' to ' .  $_POST["acf"]["field_66c74a91e4bd0"] . ' on ' . $date->format('F j, Y') . ' at ' . $time->format('H:i') . '. For more details click here. Contact Doctor Dash at (919) 390-3320 to reserve your ride today. Terms and conditions apply';
+	$title = 'Free Discount Medical transportation from ' . $_POST["acf"]["field_66a911abbb422"] . ' to ' .  $_POST["acf"]["field_66c74a91e4bd0"] . ' on ' . $date->format('F j, Y') . ' at ' . $time->format('H:i') . '. For more details click here. Contact Doctor Dash at (919) 390-3320 to reserve your ride today. Terms and conditions apply';
 
 	$where = array('ID' => $post_id);
 
 	global $wpdb;
 
 	$wpdb->update($wpdb->posts, array('post_content' => $html, 'post_excerpt' => $title), $where);
-
-	if ($fields["map"] == '')
-		return;
-
-	//$image_id = $fields["map"]["ID"];
-
-	//set_empty_seat_featured_image($post_id, $image_id);
 
 	$google_static_map_id = '5085acd06b8a584';
 	$google_static_map_api = 'AIzaSyDHbxSoQE9_WUDbQhA-5VE_px7HMQcGoGA';
@@ -125,10 +125,10 @@ function set_empty_seat_meta($post_id) {
 	$google_static_map_scale = '2';
 	$google_static_map_center = $_POST["acf"]["field_66a911abbb422"] . ',NC';
 	$google_static_map_marker_style = 'size:small%7C';
-	$google_static_map_marker_icon1 = 'icon:' . get_stylesheet_directory_uri() . '/images/map_pu.png';
-	$google_static_map_marker_icon2 = 'icon:' . get_stylesheet_directory_uri() . '/images/map_do.png';
-	$google_static_map_marker_loc1 = 'markers=anchor:center%7C' . $google_static_map_marker_icon1 . '%7C' . $_POST["acf"]["field_66a91255bb425"] . '%7C';
-	$google_static_map_marker_loc2 = '&markers=anchor:center%7C' . $google_static_map_marker_icon1 . '%7C' . $_POST["acf"]["field_66c74ad20e5eb"];
+	$google_static_map_marker_icon1 = 'icon:https://ridedoctordash%2Ecom/wp-content/themes/blocksy-child/imgs/map_pu%2Epng';
+	$google_static_map_marker_icon2 = 'icon:https://ridedoctordash%2Ecom/wp-content/themes/blocksy-child/imgs/map_do%2Epng';
+	$google_static_map_marker_loc1 = 'markers=anchor:center%7C' . $google_static_map_marker_icon1 . '%7C' . $_POST["acf"]["field_66a91255bb425"].'%7C';
+	$google_static_map_marker_loc2 = '&markers=anchor:center%7C' . $google_static_map_marker_icon2 . '%7C' . $_POST["acf"]["field_66c74ad20e5eb"];
 	$google_static_map_filename = $_POST["acf"]["field_66a911abbb422"].''.$_POST["acf"]["field_66a91255bb425"] . '-' . $_POST["acf"]["field_66c74a91e4bd0"].''.$_POST["acf"]["field_66c74ad20e5eb"];
 
 	
@@ -157,7 +157,7 @@ function set_empty_seat_meta($post_id) {
 	$google_static_map_style .= 'element:all%7C';
 	$google_static_map_style .= 'hue:0xe9ebed%7Csaturation:%2D78%7Clightness:67%7Cvisibility:simplified';
 
-
+	
 	$map_id = google_map_static_upload_file_by_url( 'https://maps.googleapis.com/maps/api/staticmap?'.$google_static_map_marker_loc1.''.$google_static_map_marker_loc2.'&scale='.$google_static_map_scale.'&size='. $google_static_map_size .'&style=' . $google_static_map_style . '&key=' . $google_static_map_api .'' , $google_static_map_filename );
 
 	set_empty_seat_featured_image($post_id, $map_id);
@@ -169,6 +169,7 @@ function set_empty_seat_featured_image($post_id, $image_id) {
 }
 
 add_action('save_post', 'set_post_title');
+
 add_action('save_post', 'set_empty_seat_meta');
 
 function return_empty_seats_info($a) {
@@ -197,6 +198,7 @@ function list_empty_seats_func($atts) {
 		'post_type' => 'empty-seat',
 		'post_status' => 'publish',
 		// todo maximum amount of posts, use -1 to set unlimited
+		'posts_per_page' => -1,
 		// todo type of order
 		'order' => 'DESC',
 		// todo order field
@@ -304,7 +306,10 @@ function google_map_static_upload_file_by_url( $url, $map_filename = null, $titl
 	
 	// Download url to a temp file
 	$tmp = download_url( $url );
-	if ( is_wp_error( $tmp ) ) return false;
+
+	
+	//if ( is_wp_error( $tmp ) ) return false;
+	if ( is_wp_error( $tmp ) ) var_dump( $result->get_error_messages );
 	
 	// Get the filename and extension ("photo.png" => "photo", "png")
 	$filename = pathinfo($url, PATHINFO_FILENAME);
@@ -358,6 +363,7 @@ function google_map_static_upload_file_by_url( $url, $map_filename = null, $titl
 	
 	// Error uploading
 	if ( is_wp_error($attachment_id) ) return false;
+	//if ( is_wp_error($attachment_id) ) var_dump( $result->get_error_messages );;
 	
 	// Save alt text as post meta if provided
 	if ( $alt ) {
