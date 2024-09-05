@@ -31,8 +31,6 @@ h2 .display,
 .wp-element-button,
 .wp-block-button__link,
 .wp-block-latest-posts__post-title,
-.mailpoet_submit,
-.mailpoet_form_html input[type=submit],
 button {
     font-family: var(--headline-font);
     font-weight: 700;
@@ -188,8 +186,6 @@ li {
 
 .menu a,
 .button,
-.mailpoet_form_html input[type=submit],
-.mailpoet_submit,
 button {
     font-size: 19px !important;
     text-transform: uppercase;
@@ -219,11 +215,11 @@ button {
     font-family: var(--headline-font) !important;
     line-height: 1em !important;
     font-weight: 700 !important;
-    font-size: 1.7em !important;
+    font-size: 1.5em !important;
     text-transform: uppercase !important;
     border-radius: 40px !important;
     background: initial !important;
-    padding: 20px 25px 20px 25px !important;
+    padding: 15px 25px !important;
     -webkit-border-radius: 40px !important;
     -moz-border-radius: 40px !important;
     -ms-border-radius: 40px !important;
