@@ -16,7 +16,9 @@
     --primary-color: #F26101;
     --secondary-color: #2894E5;
 }
-
+html {
+    scroll-behavior: smooth;
+  }
 .ct-container-hero {
     padding-top: 0;
 }
@@ -107,9 +109,11 @@ h2 {
 h3 {
     font-size: 2em;
 }
+
 h5 {
     font-size: 1.25em !important;
 }
+
 p,
 ul {
     font-family: var(--body-font);
@@ -202,7 +206,7 @@ button {
 .dark>.wp-element-button,
 .dark>.wp-block-button__link,
 .dark>[type=submit],
-.dark .wpforms-submit-container button {
+.dark .wpforms-submit-container button, .ct-account-login-submit, .ct-button {
     border: solid #F26101 6px !important;
     color: #F26101 !important;
 
@@ -211,7 +215,7 @@ button {
 .wp-element-button,
 .wp-block-button__link,
 .wpforms-submit-container button,
-.mailpoet_submit {
+.mailpoet_submit, .ct-account-login-submit, .ct-button {
     font-family: var(--headline-font) !important;
     line-height: 1em !important;
     font-weight: 700 !important;
@@ -269,7 +273,9 @@ button {
 [data-vertical-spacing*=bottom] {
     /* padding-bottom: 0; */
 }
-
+[data-vertical-spacing*=top] {
+    padding-top: 0;
+    }
 .page-hero,
 .page-hero .wp-block-columns {
     width: 100vw !important;
@@ -406,6 +412,8 @@ blockquote::after {
 .pricing>div {
     position: relative;
     padding: 2em;
+    min-width: 300px;
+    max-width: 300px;
     border-radius: 35px;
     -webkit-border-radius: 35px;
     -moz-border-radius: 35px;
@@ -480,6 +488,21 @@ table.dataTable>tbody>tr.child span.dtr-title {
     background-color: var(--wp--preset--color--palette-color-1) !important;
 }
 
+.book-form__section {
+    box-shadow: none;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+}
+
+.booking-wrapper {
+    min-height: 900px;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: calc(100% - 21px) auto;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+}
+
 .wpforms-submit-container button {
     line-height: 1em;
     font-size: 1.7em;
@@ -491,6 +514,17 @@ table.dataTable>tbody>tr.child span.dtr-title {
     -moz-border-radius: 40px;
     -ms-border-radius: 40px;
     -o-border-radius: 40px;
+}
+
+.wp-block-columns {
+    justify-content: center;
+}
+
+@media (min-width:782px) {
+    .wp-block-columns {
+        flex-wrap: nowrap !important;
+    }
+
 }
 
 @media only screen and (max-width: 768px) {
@@ -586,6 +620,10 @@ table.dataTable>tbody>tr.child span.dtr-title {
         -moz-transform: translateX(-50%) !important;
         -ms-transform: translateX(-50%) !important;
         -o-transform: translateX(-50%) !important;
+    }
+
+    .booking-wrapper {
+        min-height: 1500px;
     }
 
 }
