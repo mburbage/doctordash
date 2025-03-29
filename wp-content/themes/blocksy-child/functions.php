@@ -223,7 +223,7 @@ function list_empty_seats_func($atts) {
 		//'order' => 'DESC',
 		// todo order field
 		//'orderby' => 'date',
-		
+
 		// todo use your fields
 		// 'meta_query' => [
 		// 	[
@@ -310,6 +310,45 @@ function list_empty_seats_func($atts) {
 	$html .= '	</table>';
 
 	return $html;
+}
+
+/**
+ * 
+ * Load user only content. Member wall.
+ * 
+ */
+
+add_shortcode('user_only_content', 'user_only_content');
+
+
+function user_only_content($atts = array(), $content = null, $tag = '') {
+
+	// normalize attribute keys, lowercase
+	$atts = array_change_key_case((array) $atts, CASE_LOWER);
+
+	$user_post_id = intval($atts['user_post_id']);
+	$non_user_post_id = intval($atts['non_user_post_id']);
+
+	if (is_user_logged_in() && get_post($user_post_id)) {
+
+		$post = get_post($user_post_id);
+		
+		return apply_filters('the_content', $post->post_content);
+
+	} else {
+
+		echo "User post not found.";
+	}
+	if (is_user_logged_in() && get_post($non_user_post_id)) {
+
+		$post = get_post($non_user_post_id);
+		
+		return apply_filters('the_content', $post->post_content);
+
+	} else {
+		
+		echo "Non-user post not found.";
+	}
 }
 
 /**
