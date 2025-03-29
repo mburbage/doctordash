@@ -49,6 +49,21 @@
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1287910935403445&ev=PageView&noscript=1" /></noscript>
     <!-- End Meta Pixel Code -->
     <meta name="facebook-domain-verification" content="8gfog71eqlgjt5ltaimwlh6t1bdifd" />
+    <script>
+        window.ContactUsWidget = {
+            config: {
+                uuid: "ba516d58-b925-4fb9-ba69-e1b9f4533ba8",
+                messaging_url: "https://contact-widget.ooma.com",
+                customer_name: "",
+            },
+        };
+    </script>
+    <script
+        type="text/javascript"
+        async
+        defer
+        src="https://contact-widget.ooma.com/assets/widget.js"></script>
+
 </head>
 
 <?php
